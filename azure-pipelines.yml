@@ -9,8 +9,8 @@ resources:
   - container: mta
     image: 'ppiper/mta-archive-builder:latest'
     options: --user 0:0
-  - container: neo
-    image: 'ppiper/neo-cli:latest'
+  - container: cfcli
+    image: 'ppiper/cf-cli'
     options: --user 0:0 --privileged
   - container: node
     image: 'geekykaran/headless-chrome-node-docker:latest'
@@ -38,14 +38,19 @@ stages:
         vmImage: 'ubuntu-latest'
       container: node
       steps:
-        - bash: 'npm install && npm run-script test'
+        - bash: 'cd MySampleApp && npm config set @sap:registry "https://npm.sap.com" && npm install && npm run-script test'
+        - publish: $(System.DefaultWorkingDirectory)/.
+          artifact: TestResult
+
 
 - stage: deploy
-  displayName: Deployment to SAP Cloud Platform (neo)
+  displayName: Deployment to SAP Cloud Platform (cf)
   jobs:
     - job: deploy
       pool:
         vmImage: 'ubuntu-latest'
-      container: neo
+      container: cfcli
       steps:
-        - bash: 'neo.sh deploy-mta --host "$(NEO_HOST)" --account "$(NEO_ACCOUNT)" --source "target/out.mtar" -u "$(NEO_USER)" -p "$(NEO_PASSWORD)"'
+        - download: current
+          artifact: WebApp
+        - bash: 'cf login -u "$(CF-USER)" -p "$(CF-PASSWORD)" -a "$(CF-API)" -o "$(CF-ORG)" -s "$(CF-SPACE)" && cf deploy $(Pipeline.Workspace)/WebApp/MySampleApp.mtar -f'
