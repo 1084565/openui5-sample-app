@@ -43,13 +43,13 @@ stages:
         - bash: 'npm install && npm run-script test'
 
 - stage: deploy
-  displayName: Deployment to SAP Cloud Platform (cf)
+  displayName: Deployment to SAP Cloud Platform (neo)
   jobs:
     - job: deploy
       pool:
         vmImage: 'ubuntu-latest'
-      container: cfcli
       steps:
         - download: current
           artifact: WebApp
-        - bash: 'cf login -u "$(CF-USER)" -p "$(CF-PASSWORD)" -a "$(CF-API)" -o "$(CF-ORG)" -s "$(CF-SPACE)" && cf deploy $(Pipeline.Workspace)/WebApp/MySampleApp.mtar -f'
+        - bash: 'docker build -t local/neo-cli https://github.com/SAP/devops-docker-neo-cli'
+        - bash: 'docker run -v $(Pipeline.Workspace)/WebApp/:/data -w /data local/neo-cli neo.sh deploy-mta --host "$(NEO_HOST)" --account "$(NEO_ACCOUNT)" --source "MySampleApp.mtar" -u "$(NEO_USER)" -p "$(NEO_PASSWORD)"'
