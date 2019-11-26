@@ -51,5 +51,5 @@ stages:
       steps:
         - download: current
           artifact: WebApp
-        - bash: 'docker build -t local/neo-cli https://github.com/SAP/devops-docker-neo-cli'
+        - bash: 'docker build -t local/neo-cli https://github.com/SAP/devops-docker-neo-cli.git'
         - bash: 'docker run -v $(Pipeline.Workspace)/WebApp/:/data -w /data local/neo-cli neo.sh deploy-mta --host "$(NEO_HOST)" --account "$(NEO_ACCOUNT)" --source "MySampleApp.mtar" -u "$(NEO_USER)" -p "$(NEO_PASSWORD)"'
