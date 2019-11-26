@@ -28,7 +28,9 @@ stages:
         vmImage: 'ubuntu-latest'
       container: mta
       steps:
-        - bash: 'mtaBuild --build-target NEO --mtar target/out.mtar build'
+        - bash: 'mtaBuild --build-target CF --mtar MySampleApp.mtar build'
+        - publish: $(System.DefaultWorkingDirectory)/.
+          artifact: WebApp
 
 - stage: test
   displayName: Run Karma Test Suite
