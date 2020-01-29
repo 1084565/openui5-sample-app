@@ -1,5 +1,3 @@
-![OpenUI5 logo](http://openui5.org/images/OpenUI5_new_big_side.png)
-
 # openui5-sample-app
 > [OpenUI5](https://github.com/SAP/openui5) sample app using the [UI5 Tooling](https://github.com/SAP/ui5-tooling).
 
