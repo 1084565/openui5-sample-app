@@ -1,11 +1,11 @@
 #Steps Specific Configuration
 steps:
   mtaBuild:
-    buildTarget: 'NEO'
-  neoDeploy:
-    deployMode: mta
-    neo:
-      credentialsId: 'NEO_DEPLOY'
-      account: 'r15qd7iy5l'
-      host: 'hana.ondemand.com'
-  
+    buildTarget: 'CF'
+  cloudFoundry: 
+    apiEndpoint: 'https://api.cf.sap.hana.ondemand.com'
+    appName: 'cfAppName'
+    credentialsId: 'cfCredentialsId'
+    org: 'CI/CDInternalDemos_htmls5'
+    space: 'html5apps'
+    deployTool: 'cf_native'
